@@ -52,6 +52,8 @@ module.exports = {
         allowNull: false,
         field: 'in_progress',
       },
+    }, {
+      timestamps: false,
     });
   },
 
