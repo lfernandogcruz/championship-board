@@ -3,6 +3,11 @@ import loginValidation from '../middlewares/bodyValidations';
 
 const router = Router();
 
-router.get('/login', loginValidation);
+router.post(
+  '/login',
+  loginValidation.loginNotEmpty,
+  loginValidation.loginValidateEmail,
+  loginValidation.loginFieldsLength,
+);
 
 export default router;
