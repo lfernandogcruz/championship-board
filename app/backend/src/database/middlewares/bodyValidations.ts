@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import IUser from '../interfaces/ILogin';
+import IUser from '../interfaces/IUser';
 
 const loginValidation = {
   loginNotEmpty: (req: Request, res: Response, next: NextFunction) => {
@@ -14,7 +14,7 @@ const loginValidation = {
     const validateEmailInputRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isplayerEmailValid = validateEmailInputRegex.test(email);
     if (!isplayerEmailValid) {
-      return res.status(400).json({ message: '"email" must be a valid email' });
+      return res.status(401).json({ message: 'Incorrect email or password' });
     }
     next();
   },
