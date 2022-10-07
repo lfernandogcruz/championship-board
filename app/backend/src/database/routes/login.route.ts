@@ -9,7 +9,7 @@ const usersController = new UsersController(usersService);
 const loginRouter = Router();
 
 loginRouter.post(
-  '/login',
+  '/',
   loginValidation.loginNotEmpty,
   loginValidation.loginValidateEmail,
   loginValidation.loginFieldsLength,
