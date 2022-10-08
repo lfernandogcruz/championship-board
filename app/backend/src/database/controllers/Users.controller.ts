@@ -6,15 +6,15 @@ import 'dotenv/config';
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
 class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(private usersService = new UsersService()) {}
 
-  public async findOne(req: Request, res: Response) {
+  public async findUser(req: Request, res: Response): Promise<Response> {
     const { email, password } = req.body;
-    const user = await this.usersService.findOne(email, password);
-    if (!user) {
+    const response = await this.usersService.findUser(email, password);
+    if (!response) {
       return res.status(404).json({ message: 'Sorry, the princess is in another castle!' });
     }
-    const token = sign({ data: user }, JWT_SECRET, { expiresIn: '8d' });
+    const token = sign({ email }, JWT_SECRET, { expiresIn: '8d', algorithm: 'HS256' });
     return res.status(200).json({ token });
   }
 }

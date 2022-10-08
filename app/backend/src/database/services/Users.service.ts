@@ -1,11 +1,12 @@
-import Users from '../models/Users.model';
+import IUser from '../interfaces/IUser';
+import User from '../models/User.model';
 
 class UsersService {
-  private db = Users;
+  public db = User;
 
-  public findOne = async (email: string, password: string): Promise<Users> => {
-    const user = await this.db.findOne({ where: { email, password } });
-    return user as Users;
+  public findUser = async (email: string, password: string): Promise<IUser> => {
+    const user = await this.db.findOne({ where: { email, password } }) as IUser;
+    return user as unknown as IUser;
   };
 }
 
