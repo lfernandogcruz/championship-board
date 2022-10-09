@@ -1,6 +1,7 @@
 import { BOOLEAN, INTEGER, Model } from 'sequelize';
 import db from '.';
 // import OtherModel from './OtherModel';
+import Teams from './Teams.model';
 
 class Matches extends Model {
   // public <campo>!: <tipo>;
@@ -57,5 +58,10 @@ Matches.init({
 
 // Matches.hasMany(OtherModel, { foreignKey: 'campoC', as: 'campoEstrangeiroC' });
 // Matches.hasMany(OtherModel, { foreignKey: 'campoD', as: 'campoEstrangeiroD' });
+Teams.hasMany(Matches, { foreignKey: 'home_team', as: 'homeTeam' });
+Teams.hasMany(Matches, { foreignKey: 'away_team', as: 'awayTeam' });
+
+Matches.belongsToMany(Teams, { foreignKey: 'home_team', as: 'homeTeam', through: 'home_team' });
+Matches.belongsToMany(Teams, { foreignKey: 'away_team', as: 'awayTeam', through: 'away_team' });
 
 export default Matches;
