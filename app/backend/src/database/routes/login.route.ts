@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import loginValidation from '../middlewares/bodyValidations';
+// import loginValidation from '../middlewares/bodyValidations';
 import UsersController from '../controllers/Users.controller';
 import UsersService from '../services/Users.service';
 
@@ -11,10 +11,10 @@ const loginRouter = Router();
 
 loginRouter.post(
   '/',
-  loginValidation.loginNotEmpty,
-  loginValidation.loginValidateEmail,
-  loginValidation.loginFieldsLength,
-  loginValidation.loginEmailAndPasswordValidation,
+  // loginValidation.loginNotEmpty,
+  // loginValidation.loginValidateEmail,
+  // loginValidation.loginFieldsLength,
+  // loginValidation.loginEmailAndPasswordValidation,
   usersController.findUser,
 );
 
