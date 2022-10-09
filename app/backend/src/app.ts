@@ -9,10 +9,9 @@ class App {
 
     this.config();
 
-    this.app.use('/login', routes.login);
-
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
+    this.app.use('/login', routes.login);
   }
 
   private config():void {
