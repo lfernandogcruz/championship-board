@@ -31,10 +31,10 @@ describe('Testing the Login route', () => {
       .stub(User, "findOne")
       .resolves({
         id: 1,
-        username: 'MichaelScott',
-        role: 'admin',
-        email: 'mscott@dunder-mifflin.com',
-        password: '123456',
+        username: 'User',
+        role: 'user',
+        email: 'user@user.com',
+        password: 'secret_user',
       } as User);
   });
 
