@@ -58,10 +58,10 @@ Matches.init({
 
 // Matches.hasMany(OtherModel, { foreignKey: 'campoC', as: 'campoEstrangeiroC' });
 // Matches.hasMany(OtherModel, { foreignKey: 'campoD', as: 'campoEstrangeiroD' });
-Teams.hasMany(Matches, { foreignKey: 'home_team', as: 'homeTeam' });
-Teams.hasMany(Matches, { foreignKey: 'away_team', as: 'awayTeam' });
+Teams.hasMany(Matches, { foreignKey: 'homeTeam', as: 'homeTeam' });
+Teams.hasMany(Matches, { foreignKey: 'awayTeam', as: 'awayTeam' });
 
-Matches.belongsToMany(Teams, { foreignKey: 'home_team', as: 'homeTeam', through: 'home_team' });
-Matches.belongsToMany(Teams, { foreignKey: 'away_team', as: 'awayTeam', through: 'away_team' });
+Matches.belongsToMany(Teams, { foreignKey: 'homeTeam', as: 'homeTeam', through: 'homeTeam' });
+Matches.belongsToMany(Teams, { foreignKey: 'awayTeam', as: 'awayTeam', through: 'awayTeam' });
 
 export default Matches;
