@@ -31,6 +31,13 @@ class MatchesService {
     if (!newMatch) return null;
     return newMatch as IMatch;
   };
+
+  public finishMatch = async (id: number): Promise<IMatch | null> => {
+    const match = await this.db.findByPk(id);
+    if (!match) return null;
+    const finishedMatch = await match.update({ inProgress: false });
+    return finishedMatch as IMatch;
+  };
 }
 
 export default MatchesService;
