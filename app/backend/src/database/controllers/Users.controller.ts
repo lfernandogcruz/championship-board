@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import constants from '../helpers/constants';
 // import IToken from '../interfaces/IToken';
 import UsersService from '../services/Users.service';
 
@@ -9,7 +10,7 @@ class UsersController {
     const { email, password } = req.body;
     const response = await this.usersService.findUser(email, password);
     if (!response) {
-      return res.status(404).json({ message: 'Sorry, the princess is in another castle!' });
+      return res.status(404).json({ message: constants.error404Message });
     }
     req.headers.authorization = response as unknown as string;
     return res.status(200).json({ token: response });
