@@ -39,6 +39,21 @@ const loginValidation = {
     }
     next();
   },
+  postMatchesFieldsValidation: (req: Request, res: Response, next: NextFunction) => {
+    const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress } = req.body;
+    if (!homeTeam || !awayTeam || !homeTeamGoals || !awayTeamGoals || inProgress === undefined) {
+      return res.status(401).json({ message: 'All fields must be filled' });
+    }
+    next();
+  },
+  differentTeamsValidation: (req: Request, res: Response, next: NextFunction) => {
+    const { homeTeam, awayTeam } = req.body;
+    if (homeTeam === awayTeam) {
+      return res.status(401)
+        .json({ message: 'It is not possible to create a match with two equal teams' });
+    }
+    next();
+  },
 };
 
 export default loginValidation;
