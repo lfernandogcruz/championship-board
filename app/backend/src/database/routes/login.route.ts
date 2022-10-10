@@ -21,9 +21,9 @@ loginRouter.post(
   (req, res) => usersController.findUser(req, res),
 
 );
-// loginRouter.get(
-//   '/validate',
-//   usersController.validateHeader,
-// );
+loginRouter.get(
+  '/validate',
+  (req, res) => usersController.validateHeader(req, res),
+);
 
 export default loginRouter;
