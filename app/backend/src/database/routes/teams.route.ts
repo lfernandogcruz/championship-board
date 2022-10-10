@@ -9,11 +9,11 @@ const teamsRouter = Router();
 
 teamsRouter.get(
   '/',
-  teamsController.findAll,
+  (req, res) => teamsController.findAll(req, res),
 );
 teamsRouter.get(
   '/:id',
-  teamsController.findById,
+  (req, res) => teamsController.findById(req, res),
 );
 
 export default teamsRouter;

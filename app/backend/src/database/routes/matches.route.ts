@@ -9,11 +9,11 @@ const matchesRouter = Router();
 
 matchesRouter.get(
   '/',
-  matchesController.findAll,
+  (req, res) => matchesController.findAll(req, res),
 );
 matchesRouter.get(
   '/:id',
-  matchesController.findById,
+  (req, res) => matchesController.findById(req, res),
 );
 
 export default matchesRouter;
