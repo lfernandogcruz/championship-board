@@ -25,6 +25,12 @@ class MatchesService {
     if (!match) return null;
     return match as IMatch;
   };
+
+  public create = async (match: IMatch): Promise<IMatch | null> => {
+    const newMatch = await this.db.create(match);
+    if (!newMatch) return null;
+    return newMatch as IMatch;
+  };
 }
 
 export default MatchesService;
