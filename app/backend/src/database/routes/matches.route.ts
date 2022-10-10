@@ -24,5 +24,10 @@ matchesRouter.post(
   middlewares.differentTeamsValidation,
   (req, res) => matchesController.create(req, res),
 );
+matchesRouter.patch(
+  '/:id/finish',
+  tokenValidation,
+  (req, res) => matchesController.finishMatch(req, res),
+);
 
 export default matchesRouter;
