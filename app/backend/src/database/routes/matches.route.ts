@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import MatchesController from '../controllers/Matches.controller';
+import tokenValidation from '../middlewares/tokenValidation';
+import middlewares from '../middlewares/bodyValidations';
 import MatchesService from '../services/Matches.service';
 
 const matchesService = new MatchesService();
@@ -14,6 +16,13 @@ matchesRouter.get(
 matchesRouter.get(
   '/:id',
   (req, res) => matchesController.findById(req, res),
+);
+matchesRouter.post(
+  '/',
+  tokenValidation,
+  middlewares.postMatchesFieldsValidation,
+  middlewares.differentTeamsValidation,
+  (req, res) => matchesController.create(req, res),
 );
 
 export default matchesRouter;
