@@ -4,7 +4,7 @@ import MatchesService from '../services/Matches.service';
 class MatchesController {
   constructor(private matchesService = new MatchesService()) {}
 
-  public async findAll(req: Request, res: Response): Promise<Response> {
+  public async findAll(_req: Request, res: Response): Promise<Response> {
     const response = await this.matchesService.findAll();
     if (!response) {
       return res
