@@ -28,7 +28,7 @@ class MatchesController {
     const { homeTeam, awayTeam } = req.body;
     const teamAreValid = await teamIdValidation(homeTeam, awayTeam);
     if (!teamAreValid) {
-      return res.status(404).json({ message: 'Team not found' });
+      return res.status(404).json({ message: 'There is no team with such id!' });
     }
     const { homeTeamGoals, awayTeamGoals, inProgress } = req.body;
     const newMatch = {
@@ -38,6 +38,15 @@ class MatchesController {
       return res.status(404).json({ message: constants.error404Message });
     }
     return res.status(201).json(response);
+  }
+
+  public async finishMatch(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const response = await this.matchesService.finishMatch(Number(id));
+    if (!response) {
+      return res.status(404).json({ message: constants.error404Message });
+    }
+    return res.status(200).json({ message: 'Finished' });
   }
 }
 
