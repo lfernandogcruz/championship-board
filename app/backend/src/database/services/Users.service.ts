@@ -1,4 +1,4 @@
-import { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 import * as bcrypt from 'bcryptjs';
 import IUser from '../interfaces/IUser';
 import User from '../models/User.model';
@@ -21,6 +21,14 @@ class UsersService {
       expiresIn: '8d', algorithm: 'HS256' }) as unknown as IToken;
 
     return token as unknown as IUser;
+  };
+
+  public validateHeader = async (authorization: string): Promise<IUser> => {
+    const decoded = verify(authorization, JWT_SECRET) as unknown as IToken;
+    if (!decoded) return null as unknown as IUser;
+    const user = await this.db.findOne({ where: { email: decoded.email }, raw: true }) as IUser;
+    if (!user) return null as unknown as IUser;
+    return user;
   };
 }
 
