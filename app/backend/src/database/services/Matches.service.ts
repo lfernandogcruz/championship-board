@@ -38,6 +38,17 @@ class MatchesService {
     const finishedMatch = await match.update({ inProgress: false });
     return finishedMatch as IMatch;
   };
+
+  public updateScoreMatch = async (
+    id: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+  ): Promise<IMatch | null> => {
+    const match = await this.db.findByPk(id);
+    if (!match) return null;
+    const updatedMatch = await match.update({ homeTeamGoals, awayTeamGoals });
+    return updatedMatch as IMatch;
+  };
 }
 
 export default MatchesService;
