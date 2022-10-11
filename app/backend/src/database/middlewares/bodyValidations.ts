@@ -1,6 +1,8 @@
 import * as bcrypt from 'bcryptjs';
 import { NextFunction, Request, Response } from 'express';
 import IUser from '../interfaces/IUser';
+import Matches from '../models/Matches.model';
+import Teams from '../models/Teams.model';
 import User from '../models/User.model';
 
 const loginValidation = {
@@ -39,10 +41,22 @@ const loginValidation = {
     }
     next();
   },
-  postMatchesFieldsValidation: (req: Request, res: Response, next: NextFunction) => {
-    const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress } = req.body;
-    if (!homeTeam || !awayTeam || !homeTeamGoals || !awayTeamGoals || inProgress === undefined) {
+  teamIdValidation: async (id:number) => {
+    const response = await Teams.findByPk(id);
+    if (!response) return false;
+    return true;
+  },
+  postMatchesFieldsValidation: async (req: Request, res: Response, next: NextFunction) => {
+    const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
+    if (!homeTeam || !awayTeam || !homeTeamGoals || !awayTeamGoals) {
       return res.status(401).json({ message: 'All fields must be filled' });
+    }
+    const homeTId = Number(homeTeam);
+    const awayTId = Number(awayTeam);
+    const isHomeTeamIdValid = await loginValidation.teamIdValidation(homeTId);
+    const isAwayTeamIdValid = await loginValidation.teamIdValidation(awayTId);
+    if (!isHomeTeamIdValid || !isAwayTeamIdValid) {
+      return res.status(404).json({ message: 'There is no team with such id!' });
     }
     next();
   },
@@ -51,6 +65,14 @@ const loginValidation = {
     if (homeTeam === awayTeam) {
       return res.status(401)
         .json({ message: 'It is not possible to create a match with two equal teams' });
+    }
+    next();
+  },
+  matchIdValidation: async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+    const isIdValid = await Matches.findByPk(Number(id));
+    if (!isIdValid) {
+      return res.status(401).json({ message: 'Match id must be a valid id' });
     }
     next();
   },
