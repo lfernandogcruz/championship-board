@@ -31,6 +31,9 @@ class MatchesController {
       return res.status(404).json({ message: 'There is no team with such id!' });
     }
     const { homeTeamGoals, awayTeamGoals, inProgress } = req.body;
+    if (inProgress === false) {
+      return res.status(406).json({ message: 'You can not create a finished match!' });
+    }
     const newMatch = {
       homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress };
     const response = await this.matchesService.create(newMatch) as IMatch;
@@ -47,6 +50,17 @@ class MatchesController {
       return res.status(404).json({ message: constants.error404Message });
     }
     return res.status(200).json({ message: 'Finished' });
+  }
+
+  public async updateScoreMatch(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const ID = Number(id);
+    const { homeTeamGoals, awayTeamGoals } = req.body;
+    const response = await this.matchesService.updateScoreMatch(ID, homeTeamGoals, awayTeamGoals);
+    if (!response) {
+      return res.status(404).json({ message: constants.error404Message });
+    }
+    return res.status(200).json(response);
   }
 }
 
