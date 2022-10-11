@@ -13,10 +13,6 @@ matchesRouter.get(
   '/',
   (req, res) => matchesController.findAll(req, res),
 );
-matchesRouter.get(
-  '/:id',
-  (req, res) => matchesController.findById(req, res),
-);
 matchesRouter.post(
   '/',
   tokenValidation,
@@ -24,9 +20,22 @@ matchesRouter.post(
   middlewares.differentTeamsValidation,
   (req, res) => matchesController.create(req, res),
 );
+
+matchesRouter.get(
+  '/:id',
+  (req, res) => matchesController.findById(req, res),
+);
+matchesRouter.patch(
+  '/:id',
+  tokenValidation,
+  middlewares.matchIdValidation,
+  (req, res) => matchesController.updateScoreMatch(req, res),
+);
+
 matchesRouter.patch(
   '/:id/finish',
   tokenValidation,
+  middlewares.matchIdValidation,
   (req, res) => matchesController.finishMatch(req, res),
 );
 
