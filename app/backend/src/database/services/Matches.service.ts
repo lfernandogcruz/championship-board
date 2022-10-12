@@ -1,4 +1,5 @@
 import IMatch from '../interfaces/IMatch';
+import IQueryProgress from '../interfaces/IQueryProgress';
 import Matches from '../models/Matches.model';
 import Teams from '../models/Teams.model';
 
@@ -6,16 +7,40 @@ class MatchesService {
   public db = Matches;
 
   public findAll = async (): Promise<IMatch[] | null> => {
-    const matches = await this.db.findAll({ include: [{
-      model: Teams,
-      as: 'teamHome' as string,
-      attributes: { include: ['teamName'], exclude: ['id'] },
-    }, {
-      model: Teams,
-      as: 'teamAway' as string,
-      attributes: { include: ['teamName'], exclude: ['id'] },
-    },
-    ] });
+    const matches = await this.db.findAll({
+      include: [
+        {
+          model: Teams,
+          as: 'teamHome' as string,
+          attributes: { include: ['teamName'], exclude: ['id'] },
+        },
+        {
+          model: Teams,
+          as: 'teamAway' as string,
+          attributes: { include: ['teamName'], exclude: ['id'] },
+        },
+      ],
+    });
+    if (!matches) return null;
+    return matches as IMatch[];
+  };
+
+  public findAllQuery = async (query: IQueryProgress): Promise<IMatch[] | null> => {
+    const matches = await this.db.findAll({
+      include: [
+        {
+          model: Teams,
+          as: 'teamHome' as string,
+          attributes: { include: ['teamName'], exclude: ['id'] },
+        },
+        {
+          model: Teams,
+          as: 'teamAway' as string,
+          attributes: { include: ['teamName'], exclude: ['id'] },
+        },
+      ],
+      where: { inProgress: query.inProgress },
+    });
     if (!matches) return null;
     return matches as IMatch[];
   };
