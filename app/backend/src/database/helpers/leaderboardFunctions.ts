@@ -42,9 +42,9 @@ const LeaderboardFunctions = {
     const totalPoints = matchesList
       .filter((match) => match[mainTeam] === team.id)
       .reduce((acc, match) => {
-        if (match[mainTeamGoals] > match[opponentGoals]) return acc + 3;
-        if (match[mainTeamGoals] === match[opponentGoals]) return acc + 1;
-        return acc;
+        if (match[mainTeamGoals] > match[opponentGoals]) return acc + 3; // win
+        if (match[mainTeamGoals] === match[opponentGoals]) return acc + 1; // draw
+        return acc + 0; // loss
       }, 0);
     return totalPoints;
   },
@@ -114,20 +114,18 @@ const LeaderboardFunctions = {
   efficiency: (totalPoints: number, totalGames: number) => {
     // P/(J*3)*100
     const percentage = (totalPoints / (totalGames * 3)) * 100;
-    return `${percentage.toFixed(2)}%`;
+    // const stringCompose = `${Number(percentage).toFixed(2)}%`;
+    return Number(percentage.toFixed(2));
   },
 
   sortLeaderboard: (leaderboard: ILeaderboard[]) => {
-    const sortedLeaderboard = leaderboard.sort((a, b) => {
-      if (a.totalPoints > b.totalPoints) return -1;
-      if (a.totalPoints < b.totalPoints) return 1;
-      if (a.goalsBalance > b.goalsBalance) return -1;
-      if (a.goalsBalance < b.goalsBalance) return 1;
-      if (a.goalsFavor > b.goalsFavor) return -1;
-      if (a.goalsFavor < b.goalsFavor) return 1;
-      return 0;
-    });
-    return sortedLeaderboard;
+    const sortedLeaderboard = leaderboard.sort((a, b) =>
+      b.totalPoints - a.totalPoints
+    || b.totalVictories - a.totalVictories
+    || b.goalsBalance - a.goalsBalance
+    || b.goalsFavor - a.goalsFavor
+    || b.goalsOwn + a.goalsOwn);
+    return sortedLeaderboard as ILeaderboard[];
   },
 };
 
