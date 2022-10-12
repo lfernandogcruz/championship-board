@@ -8,8 +8,18 @@ const leaderboardController = new LeaderboardController(leaderboardService);
 const leaderboardRouter = Router();
 
 leaderboardRouter.get(
+  '/',
+  (req, res) => leaderboardController.generalFindAll(req, res),
+);
+
+leaderboardRouter.get(
   '/home',
   (req, res) => leaderboardController.homeFindAll(req, res),
+);
+
+leaderboardRouter.get(
+  '/away',
+  (req, res) => leaderboardController.awayFindAll(req, res),
 );
 
 export default leaderboardRouter;
