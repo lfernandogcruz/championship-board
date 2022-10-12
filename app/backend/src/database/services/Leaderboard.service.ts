@@ -2,7 +2,6 @@ import Matches from '../models/Matches.model';
 import ILeaderboard from '../interfaces/ILeaderboard';
 import Teams from '../models/Teams.model';
 import helpers from '../helpers/leaderboardFunctions';
-// import ITeam from '../interfaces/ITeam';
 
 class LeaderboardService {
   public teams = Teams;
@@ -21,7 +20,8 @@ class LeaderboardService {
     });
     const matchesList = await this.matches.findAll();
     const leaderboard = teamsList
-      .map((team) => helpers.teamObjConstructor(team, matchesList, 'home'));
+      .map((team) => helpers
+        .teamObjConstructor(team, matchesList, 'home')) as unknown as ILeaderboard[];
     if (!leaderboard) return null;
     const sortedLeaderboard = helpers.sortLeaderboard(leaderboard);
     return sortedLeaderboard;
