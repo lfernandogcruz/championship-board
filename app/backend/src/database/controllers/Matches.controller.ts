@@ -3,12 +3,21 @@ import teamIdValidation from '../helpers/teamIdValidation';
 import MatchesService from '../services/Matches.service';
 import constants from '../helpers/constants';
 import IMatch from '../interfaces/IMatch';
+import IQueryProgress from '../interfaces/IQueryProgress';
 
 class MatchesController {
   constructor(private matchesService = new MatchesService()) {}
 
-  public async findAll(_req: Request, res: Response): Promise<Response> {
-    const response = await this.matchesService.findAll();
+  public async findAll(req: Request, res: Response): Promise<Response> {
+    const { query } = req; // ---> inProgress: true
+    let response = [] as unknown as IMatch[];
+    if (query === undefined) {
+      response = await this.matchesService.findAll() as IMatch[];
+    }
+    if (query !== undefined) {
+      response = await this.matchesService
+        .findAllQuery(query as unknown as IQueryProgress) as IMatch[];
+    }
     if (!response) {
       return res.status(404).json({ message: constants.error404Message });
     }
